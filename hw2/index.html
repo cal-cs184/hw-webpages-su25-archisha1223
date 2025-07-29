@@ -6,8 +6,8 @@
 			src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 		<style>
-			h1, h2, h3 {
-				text-align: left;
+			h1 {
+				text-align: center;
 			}
 
 			.container {
@@ -62,7 +62,7 @@
 			
 		<h2>Section I: Bezier Curves and Surfaces</h2>
 
-		<h3>Part 1: Bezier curves with 1D de Casteljau subdivision</h3>
+		<h2>Part 1: Bezier curves with 1D de Casteljau subdivision</h2>
 		Bezier curves and surfaces are used to model smooth and infinitely scalable curves and surfaces. To evaluate Bezier curves, I implemented de Casteljau's algorithm using an iterative approach.  
 		<p>
   		Given <em>n</em> control points \( p_1, \ldots, p_n \) and the parameter \( t \), I used linear interpolation to compute the \( n - 1 \) intermediate control points at the parameter \( t \) 
@@ -130,7 +130,7 @@
 		</div>
 
 			
-		<h3 style="text-align: left;">Part 2: Bezier surfaces with separable 1D de Casteljau</h3>
+		<h2 style="text-align: left;">Part 2: Bezier surfaces with separable 1D de Casteljau</h2>
 		<p> Here, I adapted my implementation from Bezier curves to Bezier surfaces. A Bezier surface is defined over a 2D grid of control points. The de Casteljau algorithm extends 
 		to Bezier surfaces by performing linear interpolation in two stages: one along the rows in the <i>u</i> direction, and then along the resulting set of points across the <i>v</i> axis. 
 		Given an <i>N × N</i> grid of 3D control points, I utilized <code>evaluate1D</code> twice. First, I evaluated each row using the <i>u</i> parameter and produced a list of intermediate points. 
@@ -153,7 +153,7 @@
 
 		<h2>Section II: Triangle Meshes and Half-Edge Data Structure</h2>
 
-		<h3>Part 3: Area-weighted vertex normals</h3>
+		<h2>Part 3: Area-weighted vertex normals</h2>
 		In this task, I computed vertex normals by averaging the normals of adjacent faces, weighted by area. This method allows for better shading for smooth surfaces rather than 
 		the default flat shading. I used the half-edge data structure to loop through all neighboring triangles of a given vertex. For each face, I retrieved its three vertex positions 
 		using half-edge traversal (by using h->next()->vertex() and h->next()->next()->vertex()). I computed the face normal using a cross product. Since the magnitude of the cross 
@@ -176,7 +176,7 @@
 			</table>
 		</div>
 
-		<h3>Part 4: Edge flip</h3>
+		<h2>Part 4: Edge flip</h2>
 		In this task, I implemented a local remeshing operation to flip an edge. The goal of edge flipping is to rotate the shared edge of two adjacent triangles to connect the opposite 
 		pair of vertices, changing the local mesh connectivity but preserving the shape. 
 		To implement the edge flip operation, I began by checking if the input edge is a boundary edge, which cannot be flipped. If it is not, I proceeded to list all local references 
@@ -224,7 +224,7 @@
 		</div>
 
 			
-		<h3>Part 5: Edge split</h3>
+		<h2>Part 5: Edge split</h2>
 		In this task, I implemented a local remeshing operation to flip an edge. The goal of splitting an edge is to split the two adjacent triangles into four smaller ones, connected by the new 
 		vertex placed at the midpoint of the edge. 
 		To implement the edge split operation, I created another diagram highlighting all the new pointers and utilizing the same "old" pointers from Part 4. The key difference here was adding a 
@@ -263,7 +263,7 @@
 			</table>
 		</div>
 			
-		<h3>Part 6: Loop subdivision for mesh upsampling</h3>
+		<h2>Part 6: Loop subdivision for mesh upsampling</h2>
 		In this task, I implemented a mesh upsampling method called loop subdivision. Loop subdivision upsamples a mesh by subdividing each of its triangles into four smaller triangles and then 
 		updating the vertices of subdivided mesh based on a weighting scheme. The output of this algorithm is that the mesh becomes rounder and more concentrated towards its center. 
 		To implement this, I used the 5 step process outlined in the spec:
