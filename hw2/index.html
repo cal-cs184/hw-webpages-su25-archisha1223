@@ -128,12 +128,14 @@
 			</table>
 		</div>
 
-		<h3>Part 2: Bezier surfaces with separable 1D de Casteljau</h3>
-		Here, I adapted my implementation from Bezier curves to Bezier surfaces. A Bezier surface is defined over a 2D grid of control points. The de Casteljau algorithm extends 
-		to Bezier surfaces by performing linear interpolation in two stages: one along the rows in the \( u \) direction, and then along the resulting set of points across the \( v \)
-		axis. Given a \( N \) x \( N \) grid of 3D control points, I simply utilized evaluate1D twice. First I evaluated each row using the \( u \) parameter and produced a list of 
-		intermediate points. Then, I applied the same interpolation process along the \( v \) direction. The evaluate1D method repeatedly calls evaluateStep until a single point 
-		remains. This final point represents the evaluated surface point at (\( u \), \( v \)).
+			
+		<h3 style="text-align: left;">Part 2: Bezier surfaces with separable 1D de Casteljau</h3>
+		<p> Here, I adapted my implementation from Bezier curves to Bezier surfaces. A Bezier surface is defined over a 2D grid of control points. The de Casteljau algorithm extends 
+		to Bezier surfaces by performing linear interpolation in two stages: one along the rows in the <i>u</i> direction, and then along the resulting set of points across the <i>v</i> axis. 
+		Given an <i>N × N</i> grid of 3D control points, I utilized <code>evaluate1D</code> twice. First, I evaluated each row using the <i>u</i> parameter and produced a list of intermediate points. 
+		Then, I applied the same interpolation process along the <i>v</i> direction. The <code>evaluate1D</code> method repeatedly calls <code>evaluateStep</code> until a single point remains. 
+		This final point represents the evaluated surface point at (<i>u</i>, <i>v</i>).
+		</p>
 
 		<p>Below is an image of teapot.bez rendered using this implementation.</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
@@ -151,7 +153,27 @@
 		<h2>Section II: Triangle Meshes and Half-Edge Data Structure</h2>
 
 		<h3>Part 3: Area-weighted vertex normals</h3>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		In this task, I computed vertex normals by averaging the normals of adjacent faces, weighted by area. This method allows for better shading for smooth surfaces rather than 
+		the default flat shading. I used the half-edge data structure to loop through all neighboring triangles of a given vertex. For each face, I retrieved its three vertex positions 
+		using half-edge traversal (by using h->next()->vertex() and h->next()->next()->vertex()). I computed the face normal using a cross product. Since the magnitude of the cross 
+		product corresponds to the triangle’s area, I summed these normals to find the area-weighted result. After the loop, I normalized the summed vector to get a unit vertex normal 
+		for smooth shading.
+
+		<p>Below is a comparison of teapot shading with and without vertex normals.</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="teapot.png" width="400px"/>
+				  <figcaption>Caption goes here.</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="teapot.png" width="400px"/>
+				  <figcaption>Caption goes here.</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
 
 		<h3>Part 4: Edge flip</h3>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
