@@ -12,7 +12,7 @@
 
 			.container {
 				margin: 0 auto;
-				padding: 60px 40px;
+				padding: 60px 20%;
 				text-align: left;
 			}
 
@@ -177,27 +177,60 @@
 		</div>
 
 		<h3>Part 4: Edge flip</h3>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		In this task, I implemented a local remeshing operation to flip an edge. The goal of edge flipping is to rotate the shared edge of two adjacent triangles to connect the opposite 
+		pair of vertices, changing the local mesh connectivity but preserving the shape. 
+		To implement the edge flip operation, I began by checking if the input edge is a boundary edge, which cannot be flipped. If it is not, I proceeded to list all local references 
+		involved in the operation of two triangles which includes 10 half-edges, 4 verticies, 5 edges, and 2 faces. 
 
+		<p>
+		One key bug I encountered was black or disappearing faces after multiple edge flips, where I could successfully flip edges but upo flipping a consecutive edge, the face would disappear. 
+		I found that this was caused by incorrect face pointers and incorrect next relationships. Edge flipping was especially sensitive to the order in which pointers were updated. If even 
+		one pointer is wrong or missing, the shading will break. I fixed this bug by carefully drawing out the original and resulting triangle configuration and verifying each pointer assignment 
+		against the diagram. Another helpful debugging trick was using the GUI to flip an edge, then immediately hovering over each triangle to check which face and vertex pointers were wrong. 
+		This technique made it easier to narrow down incorrect relationships. By visually listing out the half-edges, verticies, edges, and faces, I was quickly able to follow the diagram and 
+		correct my implementation. 
+		</p>
+
+		<p>Below is the diagram I created for the implementation.</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="teapot.png" width="400px"/>
+				  <figcaption>Caption goes here.</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
+
+		<p>Here, we see the before and after of applying edge flips.</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="teapot.png" width="400px"/>
+				  <figcaption>Caption goes here.</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="teapot.png" width="400px"/>
+				  <figcaption>Caption goes here.</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
+
+		
+
+		
+
+			
 		<h3>Part 5: Edge split</h3>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 		<h3>Part 6: Loop subdivision for mesh upsampling</h3>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-		<h2>(Optional) Section III: Potential Extra Credit - Art Competition: Model something Creative</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-		<h2>Additional Notes (please remove)</h2>
-		<ul>
-			<li>You can also add code if you'd like as so: <code>code code code</code></li>
-			<li>If you'd like to add math equations, 
-				<ul>
-					<li>You can write inline equations like so: \( a^2 + b^2 = c^2 \)</li>
-					<li>You can write display equations like so: \[ a^2 + b^2 = c^2 \]</li>
-				</ul>
-			</li>
-		</ul>
+	
 		</div>
 	</body>
 </html>
