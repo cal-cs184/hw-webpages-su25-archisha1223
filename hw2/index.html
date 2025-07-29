@@ -102,7 +102,6 @@
                           <tr>
 				<td style="text-align: center;">
 				  <img src="1_step4.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
 				</td>
 			  </tr>
    			  <tr>
@@ -210,12 +209,12 @@
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
 				<td style="text-align: center;">
-				  <img src="teapot.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="4_before.png" width="400px"/>
+	
 				</td>
 				<td style="text-align: center;">
-				  <img src="teapot.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="4_after.png" width="400px"/>
+
 				</td>
 			  </tr>
 			</table>
@@ -229,37 +228,48 @@
 		new midpoint vertex <i>m<i>, 6 new half-edges, and 2 new faces. I utilized the same logic as Part 4, and similarly setNeighbors in the counterclockwise direction. 
 		By spending time on creating an accurate diagram, I faced no challenges and did not have any difficult bugs in this task.
 
+
+		<p>Below is the diagram I created for the implementation.</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="diagram_before.png" width="400px"/>
+				  <figcaption>Before</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="diagram_split.png" width="400px"/>
+				  <figcaption>After</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
+			
 		<p>Below, we see the before and after of applying edge splits.</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
 				<td style="text-align: center;">
-				  <img src="teapot.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="5_before.png" width="400px"/>
+					
 				</td>
 				<td style="text-align: center;">
-				  <img src="teapot.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="5_after.png" width="400px"/>
+
+				</td>
+				<td style="text-align: center;">
+				  <img src="5_afterFlips.png" width="400px"/>
+					<figcaption>Split and Flip</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="5_afterFlips2.png" width="400px"/>
+					<figcaption>Split and Flip</figcaption>
+
 				</td>
 			  </tr>
 			</table>
 		</div>
 
-		<p>Here, we see the before and after of applying edge splits and flips.</p>
-		<div style="display: flex; flex-direction: column; align-items: center;">
-			<table style="width: 100%; text-align: center; border-collapse: collapse;">
-			  <tr>
-				<td style="text-align: center;">
-				  <img src="teapot.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-				<td style="text-align: center;">
-				  <img src="teapot.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-			  </tr>
-			</table>
-		</div>
 			
 		<h2>Part 6: Loop subdivision for mesh upsampling</h2>
 		In this task, I implemented a mesh upsampling method called loop subdivision. Loop subdivision upsamples a mesh by subdividing each of its triangles into four smaller triangles and then 
@@ -304,18 +314,57 @@
 		behave incorrectly where corners and edges spiked out more. Once I fixed this, the subdivision pattern became consistent and smoothened the edges correctly. 
 		</p>
 
-		<p>Below, I implemented loop subdivision on the standard cube.dae, and we can notice that the cube becomes slightly asymmetric after repeated subdivisions. This is due to the face of the
-		cube having a diagnol edge in only one direction. Hence, uneven edge configurations yield inconsistent averaging weights, resulting in asymmetric renderings.</p>
+
+		<p>Below, I implemented loop subdivision on a torus, and we can notice that the edges disappear and the figure becomes more rounded and concentrated towards its center.</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
 				<td style="text-align: center;">
-				  <img src="teapot.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="5_int1.png" width="300px"/>
+			
 				</td>
 				<td style="text-align: center;">
-				  <img src="teapot.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="5_int2" width="300px"/>
+				  
+				</td>
+				<td style="text-align: center;">
+				  <img src="5_int3.png" width="300px"/>
+			
+				</td>
+				<td style="text-align: center;">
+				  <img src="5_int4" width="300px"/>
+				  
+				</td>
+			  </tr>
+			</table>
+		</div>
+
+	
+
+		<p>Below, I implemented loop subdivision on the standard cube.dae, and we can notice that the cube becomes slightly asymmetric after repeated subdivisions. This is due to the face of the
+		cube having a diagonal edge in only one direction. Hence, uneven edge configurations yield inconsistent averaging weights, resulting in asymmetric renderings.</p>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="5_b1.png" width="300px"/>
+			
+				</td>
+				<td style="text-align: center;">
+				  <img src="5_b2" width="300px"/>
+				  
+				</td>
+				<td style="text-align: center;">
+				  <img src="5_b3.png" width="300px"/>
+			
+				</td>
+				<td style="text-align: center;">
+				  <img src="5_b4" width="300px"/>
+				  
+				</td>
+				<td style="text-align: center;">
+				  <img src="5_b5" width="300px"/>
+				  
 				</td>
 			  </tr>
 			</table>
@@ -327,13 +376,26 @@
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
 				<td style="text-align: center;">
-				  <img src="teapot.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="5_a1" width="300px"/>
+	
 				</td>
 				<td style="text-align: center;">
-				  <img src="teapot.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="5_a2.png" width="300px"/>
+		
 				</td>
+				<td style="text-align: center;">
+				  <img src="5_a3" width="300px"/>
+	
+				</td>
+				<td style="text-align: center;">
+				  <img src="5_a4.png" width="300px"/>
+		
+				</td>
+				<td style="text-align: center;">
+				  <img src="5_a5" width="300px"/>
+	
+				</td>
+		
 			  </tr>
 			</table>
 		</div>
