@@ -278,14 +278,14 @@
 		To implement this, I used the 5 step process outlined in the spec:
 
 		<ol>
-		  <li>1. Compute new positions for all the vertices:
+		  <li>Compute new positions for all the vertices:
 		    For each vertex, I traversed its neighbors using the half-edge structure and computed a weighted average of their positions. 
 		    I applied the Loop subdivision weighting formula using the number of neighbors <code>n</code>, and 
 		    assigned \( u = \frac{3}{16} \) when \( n = 3 \), and \( u = \frac{3}{8n} \) otherwise. I stored the new positions in 
 		    <code>Vertex::newPosition</code> and marked all original vertices with <code>isNew = false</code>.
 		  </li>
 		
-		  <li>2. Compute the updated vertex position for edges: </strong>
+		  <li>Compute the updated vertex position for edges: </strong>
 		    For each edge, I identified the two endpoints and the two opposite vertices. 
 		    I then computed the new position using the weighted formula:<br>
 		    \[
@@ -294,17 +294,17 @@
 		    and stored it in <code>Edge::newPosition</code>. All existing edges were marked with <code>isNew = false</code>.
 		  </li>
 		
-		  <li>3. Split every edge:
+		  <li>Split every edge:
 		    I recorded a list of all edges in the original mesh before performing any splits. Then, for each of these edges, I called <code>splitEdge</code>, 
 		    assigned the stored <code>newPosition</code> to that midpoint vertex, and marked it as a newly created vertex where (<code>isNew = true</code>).
 		  </li>
 		
-		  <li>4. Flip edges:
+		  <li>Flip edges:
 		    After splitting, I iterated through all edges again and flipped any <em>new edge</em> that connects a <em>new</em> and <em>old</em> vertex. 
 		    This allows the mesh to preserve smoothness and ensure a uniform subdivision pattern.
 		  </li>
 		
-		  <li>5. Update Final Positions:
+		  <li>Update Final Positions:
 		    I assigned the <code>newPosition</code> for each vertex in the mesh to update the finalized geometry.
 		  </li>
 		</ol>
