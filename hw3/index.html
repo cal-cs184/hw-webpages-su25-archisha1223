@@ -58,6 +58,8 @@
 		In this part of the project, I implemented ray generation and ray-primitive intersection, which are the foundation of ray tracing. These steps allow the program to simulate how rays of light interact with objects in a scene so we can render images. Our goal is to first transform the image coordinates to camera space, generate the ray in the camera space, and finally transform it into a ray in the world space. Instead of sending one ray per pixel, we generate many rays for each pixel (these are called samples). By averaging the results of all the rays, we get a smoother and more accurate image.
 		A ray is defined by the equation: r(t)=o+t d where: o is the origin of the ray (the camera position of where it starts), d is the direction the ray travels, represented as a 3D vector, t is the time of how far along the ray we travel The camera at the origin (0, 0, 0) in camera space. It looks down the -Z axis. The virtual sensor plane is at Z = -1. We convert pixel coordinates into rays in "camera space," then rotate and translate those rays into "world space" so they match the actual position and orientation of the camera in the scene. Next, I estimated the color of each pixel using Monte Carlo sampling. For every pixel, I looped over ns_aa samples, generated sub-pixel offsets, normalized them, and created rays. For each ray, I computed radiance, averaged the results, and updated the sample buffer. Thus, each pixel's color represents the direction of the ray it generates:
 
+		<br>
+			
 		<img src="images/banana.png" alt="s" style="width:50%; display:block; margin:auto;">
 
 		<p style="margin-top: 30px;">The camera at the origin (0, 0, 0) in camera space. It looks down the -Z axis. The virtual sensor plane is at Z = -1. We convert pixel coordinates into rays in "camera space," then rotate and translate those rays into "world space" so they match the actual position and orientation of the camera in the scene. Next, I estimated the color of each pixel using Monte Carlo sampling. For every pixel, I looped over ns_aa samples, generated sub-pixel offsets, normalized them, and created rays. For each ray, I computed radiance, averaged the results, and updated the sample buffer. Thus, each pixel's color represents the direction of the ray it generates:<p>
@@ -103,23 +105,52 @@
 		</div>
 			
 		<h2>Part 3: Direct Illumination</h2>
-		In this part, we focus on simulating direct illumination which allows for rendering images with realistic lighting and shading. The surfaces we render are encoded in the BSDF class (Bidirectional Scattering Distribution Function), where BSDF is a generalization of the BRDF to represent materials that can both reflect and transmit light. First I implemented diffuse BSDF, to represent a diffuse material that reflects incoming light equally in all directions on the hemisphere. Next, I implemented zero-bounce illumination to represent the light that comes out from the light source itself. 
-When a ray intersects a surface, we must estimate how much illumination arrives at that point by considering all the light coming from every direction. To determine a close estimate, we use Monte Carlo sampling to approximate this integral. We implemented two different strategies to do this: Uniform Hemisphere Sampling and Light Importance Sampling.
-Uniform Hemisphere Sampling chooses random directions uniformly over the hemisphere and checks if they reach a light source. To implement this, I generated a fixed number of sample directions uniformly over the hemisphere that are centered at the intersection point’s normal. I transformed each sample to world space and I casted a “shadow ray” from the hit point along that direction. If the ray hit a light source, I computed its contribution to the outgoing radiance using the surface’s BSDF value for the sampled direction, the light’s emission, and the cosine of the incident angle. These were summed over all samples, then normalized by the total number of samples to estimate the direct illumination from the hemisphere. Overall, this causes the rendered images to show significant noise as seen below. 
+		In this part, we focus on simulating direct illumination which allows for rendering images with realistic lighting and shading. The surfaces we render are encoded in the BSDF class (Bidirectional Scattering Distribution Function), where BSDF is a generalization of the BRDF to represent materials that can both reflect and transmit light. First I implemented diffuse BSDF, to represent a diffuse material that reflects incoming light equally in all directions on the hemisphere. Next, I implemented zero-bounce illumination to represent the light that comes out from the light source itself. When a ray intersects a surface, we must estimate how much illumination arrives at that point by considering all the light coming from every direction. To determine a close estimate, we use Monte Carlo sampling to approximate this integral. We implemented two different strategies to do this: Uniform Hemisphere Sampling and Light Importance Sampling. Uniform Hemisphere Sampling chooses random directions uniformly over the hemisphere and checks if they reach a light source. To implement this, I generated a fixed number of sample directions uniformly over the hemisphere that are centered at the intersection point’s normal. I transformed each sample to world space and I casted a “shadow ray” from the hit point along that direction. If the ray hit a light source, I computed its contribution to the outgoing radiance using the surface’s BSDF value for the sampled direction, the light’s emission, and the cosine of the incident angle. These were summed over all samples, then normalized by the total number of samples to estimate the direct illumination from the hemisphere. Overall, this causes the rendered images to show significant noise as seen below. 
 
-			<p>Comparatively, I implemented Importance Sampling of the lights to account for scenes with point light sources. Instead of sampling in random directions, this method samples rays that specifically point toward each light source in the scene. Specifically, I used sample_L. For each sampled light direction, I cast a shadow ray to check if the light was visible, and if it was, I computed the contribution using the BSDF, the light’s radiance, and the cosine term, then normalized by the PDF. This reduces variance by sampling intentionally and improves efficiency as there is less computational overhead. The result is smoother shading and fast convergence to a more clean image than compared to uniform sampling as we can see below. 
-</p>
+		<div style="display: flex; gap: 10px;">
+		  <figure style="text-align: center;">
+		  <img src="images/CBbunny_H_64_32.png" alt="Direct illumination" width="480">
+		  </figure>
+			
+		  <figure> 
+		  <img src="images/CBdragon_H_64_32.png" alt="Indirect illumination" width="480">
+		  </figure>
+		</div>
+			
+			
+		<p>Comparatively, I implemented Importance Sampling of the lights to account for scenes with point light sources. Instead of sampling in random directions, this method samples rays that specifically point toward each light source in the scene. Specifically, I used sample_L. For each sampled light direction, I cast a shadow ray to check if the light was visible, and if it was, I computed the contribution using the BSDF, the light’s radiance, and the cosine term, then normalized by the PDF. This reduces variance by sampling intentionally and improves efficiency as there is less computational overhead. The result is smoother shading and fast convergence to a more clean image than compared to uniform sampling as we can see below. </p>
 
-			<p>In comparison, Importance Sampling displays better results with smoother images and more efficiency whereas Hemisphere Sampling is more grainy or noisy and time-inefficient. This is because Hemisphere Sampling requires numerous random samples making it inefficient since most of the sampled rays either miss the lights entirely or barely contribute to illumination. Importance sampling has faster convergence since the samples are targeted and calculated purposefully. Since there is less variance, we have smoother resulting renders. 
-Below, we focus on light sampling. We can see that the noise varies when we change the number of rays to sample each area light. As we increase the number of samples, we see less noise. Here are the results with 1, 4, 16, and 64 samples per area light and 1 sample per pixel (contributing to the high noise):
-</p>
+		<div style="display: flex; gap: 10px;">
+		  <figure style="text-align: center;">
+		  <img src="images/bunny_H_64_32.png" alt="Direct illumination" width="480">
+		  </figure>
+			
+		  <figure> 
+		  <img src="images/dragon_H_64_32.png" alt="Indirect illumination" width="480">
+		  </figure>
+		</div>
+			
+		<p>In comparison, Importance Sampling displays better results with smoother images and more efficiency whereas Hemisphere Sampling is more grainy or noisy and time-inefficient. This is because Hemisphere Sampling requires numerous random samples making it inefficient since most of the sampled rays either miss the lights entirely or barely contribute to illumination. Importance sampling has faster convergence since the samples are targeted and calculated purposefully. Since there is less variance, we have smoother resulting renders. Below, we focus on light sampling. We can see that the noise varies when we change the number of rays to sample each area light. As we increase the number of samples, we see less noise. Here are the results with 1, 4, 16, and 64 samples per area light and 1 sample per pixel (contributing to the high noise):</p>
+			
+		<div style="display: flex; gap: 10px;">
+		  <figure style="text-align: center;">
+		  <img src="images/p3bunny_1.png" alt="Direct illumination" width="480">
+			<figcaption style="margin-bottom: 40px;">1 sample per area light</figcaption>
+		  <img src="images/p3bunny_16.png" alt="Direct illumination" width="480">
+			<figcaption>16 samples per area light</figcaption>
+		  </figure>
+			
+		  <figure> 
+		  <img src="images/p3bunny_4.png" alt="Indirect illumination" width="480">
+			<figcaption style="margin-bottom: 40px;">4 samples per area light</figcaption>
+		 
+		  <img src="images/p3bunny_64.png" alt="Indirect illumination" width="480">
+			<figcaption>64 samples per area light</figcaption>
+		  </figure>
+		</div>
 			
 		<h2>Part 4: Global Illumination</h2>
-		*In this section, my code broke as I was switching between testing accumulated, unaccumulated, and isAccumBounces = False. While doing the project, I did see the correct output for all but as I rebuilt to make submission images after adding some code to debug adaptive sampling it broke. I apologize that the images for all do not look correct.
-
-In this part, we focus on simulating indirect illumination and capturing light that has bounced multiple times before reaching the camera. This allows us to account for complex lighting effects. I implemented multiple bounces in indirect lighting via at_least_one_bounce_radiance. Starting from a surface intersection, I first added direct illumination from one_bounce_radiance if isAccumBounces is true. If the ray still has remaining depth, I sample a new bounce direction using sample_f, transform it into world space, and create a new ray from the hit point. I use Russian Roulette to randomly terminate paths after the first bounce, with a continuation probability of 0.7, ensuring the estimator remains unbiased. If the new ray hits another surface, I recursively call at_least_one_bounce_radiance on it, scale the returned radiance by the BSDF value, the cosine of the incident angle, and normalized by the PDF and continuation probability. When isAccumBounces is false, I zeroed out earlier contributions so that only the radiance from the target bounce depth is returned. In est_radiance_global_illumination, I sum zero-bounce emission with the recursive multi-bounce term to produce the final radiance. This implementation allows light to bounce multiple times, creating more realistic and visually rich renders that capture subtle lighting effects beyond direct illumination.
-
-Here are images rendered with global (direct and indirect) illumination.
+		*In this section, my code broke as I was switching between testing accumulated, unaccumulated, and isAccumBounces = False. While doing the project, I did see the correct output for all but as I rebuilt to make submission images after adding some code to debug adaptive sampling it broke. I apologize that the images for all do not look correct. In this part, we focus on simulating indirect illumination and capturing light that has bounced multiple times before reaching the camera. This allows us to account for complex lighting effects. I implemented multiple bounces in indirect lighting via at_least_one_bounce_radiance. Starting from a surface intersection, I first added direct illumination from one_bounce_radiance if isAccumBounces is true. If the ray still has remaining depth, I sample a new bounce direction using sample_f, transform it into world space, and create a new ray from the hit point. I use Russian Roulette to randomly terminate paths after the first bounce, with a continuation probability of 0.7, ensuring the estimator remains unbiased. If the new ray hits another surface, I recursively call at_least_one_bounce_radiance on it, scale the returned radiance by the BSDF value, the cosine of the incident angle, and normalized by the PDF and continuation probability. When isAccumBounces is false, I zeroed out earlier contributions so that only the radiance from the target bounce depth is returned. In est_radiance_global_illumination, I sum zero-bounce emission with the recursive multi-bounce term to produce the final radiance. This implementation allows light to bounce multiple times, creating more realistic and visually rich renders that capture subtle lighting effects beyond direct illumination. Here are images rendered with global (direct and indirect) illumination.
 
 
 			<p> Here, we can compare renders with only direct illumination and only indirect illumination. 
