@@ -78,25 +78,30 @@ First, I built a root node where the bounding box encloses all primitives. If th
 Below are examples of large .dae files that were rendered with BHV acceleration.
 </p>
 
-			<div style="display: flex; gap: 10px;">
+<div style="display: flex; gap: 10px;">
   <img src="images/CBlucy.png" alt="Direct illumination" width="480">
   <img src="images/man.png" alt="Indirect illumination" width="480">
 </div>
-			<img src="images/CBgems.png" alt="s" style="width:70%"/>
-		<p>Here we can compare rendering with and without BVH acceleration. Below, we render a few scenes with moderately complex geometries. The first scene is CBlucy.dae and we can notice that without BVH acceleration the rendering time is: seconds. In comparison, when rendered with BHV acceleration, the rendering time is significantly reduced to: seconds. This reduction comes from BVH acceleration reducing ray intersection complexity from O(n) to O(log(n)). This allows the path tracer to quickly eliminate large portions of the scene where a hit wouldn’t occur, by using the bounding box to focus on intersection tests only where needed. This results in a dramatic improvement in efficiency. 
-</p>
+			
+<br>
+			
+<img src="images/CBgems.png" alt="s" style="width:70%"/>
+			
+<p>Here we can compare rendering with and without BVH acceleration. Below, we render a few scenes with moderately complex geometries. The first scene is CBlucy.dae and we can notice that without BVH acceleration the rendering time is: seconds. In comparison, when rendered with BHV acceleration, the rendering time is significantly reduced to: seconds. This reduction comes from BVH acceleration reducing ray intersection complexity from O(n) to O(log(n)). This allows the path tracer to quickly eliminate large portions of the scene where a hit wouldn’t occur, by using the bounding box to focus on intersection tests only where needed. This results in a dramatic improvement in efficiency. </p>
 
-			<div style="display: flex; gap: 10px;">
+<div style="display: flex; gap: 10px;">
+  <figure style="text-align: center;">
   <img src="images/CBlucy.png" alt="Direct illumination" width="480">
-				<figcaption>CBlucy.dae without BVH: 109.2 seconds</figcaption>
+	<figcaption>CBlucy.dae without BVH: 109.2 seconds</figcaption>
   <img src="images/CBlucy.png" alt="Indirect illumination" width="480">
-				<figcaption>CBlucy.dae with BVH: 1.6 seconds</figcaption>
-</div>
-			<div style="display: flex; gap: 10px;">
+	<figcaption>CBlucy.dae with BVH: 1.6 seconds</figcaption>
+  </figure>
+  <figure> 
   <img src="images/cow.png" alt="Direct illumination" width="480">
-				<figcaption>CBlucy.dae without BVH: 45.1 seconds</figcaption>
+	<figcaption>CBlucy.dae without BVH: 45.1 seconds</figcaption>
   <img src="images/cow.png" alt="Indirect illumination" width="480">
-				<figcaption>CBlucy.dae without BVH: 0.32 seconds</figcaption>
+	<figcaption>CBlucy.dae without BVH: 0.32 seconds</figcaption>
+  </figure>
 </div>
 			
 		<h2>Part 3: Direct Illumination</h2>
