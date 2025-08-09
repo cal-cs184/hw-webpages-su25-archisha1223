@@ -58,7 +58,7 @@
 		In this part of the project, I implemented ray generation and ray-primitive intersection, which are the foundation of ray tracing. These steps allow the program to simulate how rays of light interact with objects in a scene so we can render images. Our goal is to first transform the image coordinates to camera space, generate the ray in the camera space, and finally transform it into a ray in the world space. Instead of sending one ray per pixel, we generate many rays for each pixel (these are called samples). By averaging the results of all the rays, we get a smoother and more accurate image.
 		A ray is defined by the equation: r(t)=o+t d where: o is the origin of the ray (the camera position of where it starts), d is the direction the ray travels, represented as a 3D vector, t is the time of how far along the ray we travel The camera at the origin (0, 0, 0) in camera space. It looks down the -Z axis. The virtual sensor plane is at Z = -1. We convert pixel coordinates into rays in "camera space," then rotate and translate those rays into "world space" so they match the actual position and orientation of the camera in the scene. Next, I estimated the color of each pixel using Monte Carlo sampling. For every pixel, I looped over ns_aa samples, generated sub-pixel offsets, normalized them, and created rays. For each ray, I computed radiance, averaged the results, and updated the sample buffer. Thus, each pixel's color represents the direction of the ray it generates:
 
-		<img src="images/banana.png" alt="s" style="width:70%"/>
+		<img src="images/banana.png" alt="s" style="width:50%"/>
 
 		<p>The camera at the origin (0, 0, 0) in camera space. It looks down the -Z axis. The virtual sensor plane is at Z = -1. We convert pixel coordinates into rays in "camera space," then rotate and translate those rays into "world space" so they match the actual position and orientation of the camera in the scene. Next, I estimated the color of each pixel using Monte Carlo sampling. For every pixel, I looped over ns_aa samples, generated sub-pixel offsets, normalized them, and created rays. For each ray, I computed radiance, averaged the results, and updated the sample buffer. Thus, each pixel's color represents the direction of the ray it generates:<p>
 
@@ -87,12 +87,16 @@ Below are examples of large .dae files that were rendered with BHV acceleration.
 </p>
 
 			<div style="display: flex; gap: 10px;">
-  <img src="images/cow.png" alt="Direct illumination" width="480">
-  <img src="images/cow.png" alt="Indirect illumination" width="480">
+  <img src="images/CBlucy.png" alt="Direct illumination" width="480">
+				<figcaption>CBlucy.dae without BVH: 109.2 seconds</figcaption>
+  <img src="images/CBlucy.png" alt="Indirect illumination" width="480">
+				<figcaption>CBlucy.dae with BVH: 1.6 seconds</figcaption>
 </div>
 			<div style="display: flex; gap: 10px;">
-  <img src="images/man.png" alt="Direct illumination" width="480">
-  <img src="images/man.png" alt="Indirect illumination" width="480">
+  <img src="images/cow.png" alt="Direct illumination" width="480">
+				<figcaption>CBlucy.dae without BVH: 45.1 seconds</figcaption>
+  <img src="images/cow.png" alt="Indirect illumination" width="480">
+				<figcaption>CBlucy.dae without BVH: 0.32 seconds</figcaption>
 </div>
 			
 		<h2>Part 3: Direct Illumination</h2>
