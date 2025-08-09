@@ -122,11 +122,11 @@
 
 		<div style="display: flex; gap: 10px;">
 		  <figure style="text-align: center;">
-		  <img src="images/bunny_H_64_32.png" alt="Direct illumination" width="480">
+		  <img src="images/bunny_64_32.png" alt="Direct illumination" width="480">
 		  </figure>
 			
 		  <figure> 
-		  <img src="images/dragon_H_64_32.png" alt="Indirect illumination" width="480">
+		  <img src="images/dragon_64_32.png" alt="Indirect illumination" width="480">
 		  </figure>
 		</div>
 			
@@ -152,39 +152,92 @@
 		<h2>Part 4: Global Illumination</h2>
 		*In this section, my code broke as I was switching between testing accumulated, unaccumulated, and isAccumBounces = False. While doing the project, I did see the correct output for all but as I rebuilt to make submission images after adding some code to debug adaptive sampling it broke. I apologize that the images for all do not look correct. In this part, we focus on simulating indirect illumination and capturing light that has bounced multiple times before reaching the camera. This allows us to account for complex lighting effects. I implemented multiple bounces in indirect lighting via at_least_one_bounce_radiance. Starting from a surface intersection, I first added direct illumination from one_bounce_radiance if isAccumBounces is true. If the ray still has remaining depth, I sample a new bounce direction using sample_f, transform it into world space, and create a new ray from the hit point. I use Russian Roulette to randomly terminate paths after the first bounce, with a continuation probability of 0.7, ensuring the estimator remains unbiased. If the new ray hits another surface, I recursively call at_least_one_bounce_radiance on it, scale the returned radiance by the BSDF value, the cosine of the incident angle, and normalized by the PDF and continuation probability. When isAccumBounces is false, I zeroed out earlier contributions so that only the radiance from the target bounce depth is returned. In est_radiance_global_illumination, I sum zero-bounce emission with the recursive multi-bounce term to produce the final radiance. This implementation allows light to bounce multiple times, creating more realistic and visually rich renders that capture subtle lighting effects beyond direct illumination. Here are images rendered with global (direct and indirect) illumination.
 
+		<div style="display: flex; gap: 10px;">
+		  <figure style="text-align: center;">
+		  <img src="images/spheres.png" alt="Direct illumination" width="480">
+		  </figure>
+			
+		  <figure> 
+		  <img src="images/p4dragon.png" alt="Indirect illumination" width="480">
+		  </figure>
+		</div>
 
-			<p> Here, we can compare renders with only direct illumination and only indirect illumination. 
-Sphere_direct and sphere_indirect
-</p>
+		<p> Here, we can compare renders with only direct illumination and only indirect illumination. Sphere_direct and sphere_indirect </p>
 
-			<p> Below, I rendered an image with different max ray depth values: 0, 1, 2, 3, 4, 5 where isAccumBounces is false. *Note: kept 64 pixels per sample as it took too long to run even with the instructional machine and I was unable to spend as much time that is needed for this project. 
-</p>
-		<p>From the 2nd and 3rd bounce of light, *it should be expected to see* the light becoming darker. This is because once the light comes directly from the source, it is bright, as seen more prominently in the 1st bounce and then in the 2nd bounce. With each bounce, the light is weaker and hence reduced as we increase m. In comparison to rasterization, path tracing with multiple bounces actually simulates light reflections and indirect light transport, while rasterization does neither. Rasterization is most similar to when m=1. 
-</p>
+		<div style="display: flex; gap: 10px;">
+		  <figure style="text-align: center;">
+		  <img src="images/sphere_direct.png" alt="Direct illumination" width="480">
+		  </figure>
+			
+		  <figure> 
+		  <img src="images/sphere_indirect.png" alt="Indirect illumination" width="480">
+		  </figure>
+		</div>
+		
+		<p> Below, I rendered an image with different max ray depth values: 0, 1, 2, 3, 4, 5 where isAccumBounces is false. *Note: kept 64 pixels per sample as it took too long to run even with the instructional machine and I was unable to spend as much time that is needed for this project. </p>
+		<p>From the 2nd and 3rd bounce of light, *it should be expected to see* the light becoming darker. This is because once the light comes directly from the source, it is bright, as seen more prominently in the 1st bounce and then in the 2nd bounce. With each bounce, the light is weaker and hence reduced as we increase m. In comparison to rasterization, path tracing with multiple bounces actually simulates light reflections and indirect light transport, while rasterization does neither. Rasterization is most similar to when m=1. </p>
 
-		<p>Below we see the rendered image with different max ray depth values: 0, 1, 2, 3, 4, 5 with accumulated and accumulated bounces. *Note: kept 64 pixels per sample as it took too long to run even with the instructional machine and I was unable to spend as much time that is needed for this project. 
+		<style>
+		  .image-row {
+		    display: flex;
+		  }
+		  .image-row img {
+		    width: 16.66%; 
+		    margin: 0;
+		    padding: 0;
+		    display: block; 
+		  }
+		</style>
+		
+		<div class="image-row">
+		  <img src="images/p4_bunny0_2.png" alt="Image 1">
+		  <img src="images/p4_bunny1_2.png" alt="Image 2">
+		  <img src="images/p4_bunny2_2.png" alt="Image 3">
+		  <img src="images/p4_bunny3_2.png" alt="Image 4">
+		  <img src="images/p4_bunny4_2.png" alt="Image 5">
+		  <img src="images/p4_bunny5_2.png" alt="Image 6">
+		</div>
+		
+		<p>Below we see the rendered image with different max ray depth values: 0, 1, 2, 3, 4, 5 with accumulated and accumulated bounces. *Note: kept 64 pixels per sample as it took too long to run even with the instructional machine and I was unable to spend as much time that is needed for this project. </p>
 
-</p>
+		<style>
+		  .image-row {
+		    display: flex;
+		  }
+		  .image-row img {
+		    width: 16.66%; 
+		    margin: 0;
+		    padding: 0;
+		    display: block; 
+		  }
+		</style>
+		
+		<div class="image-row">
+		  <img src="images/p4_bunny0_f.png" alt="Image 1">
+		  <img src="images/p4_bunny1_f.png" alt="Image 2">
+		  <img src="images/p4_bunny2_f.png" alt="Image 3">
+		  <img src="images/p4_bunny3_f.png" alt="Image 4">
+		  <img src="images/p4_bunny4_f.png" alt="Image 5">
+		  <img src="images/p4_bunny5_f.png" alt="Image 6">
+		</div>
+			
+		<p>Below are renderings with Russian Roulette.</p>
 
-		<p>Below are renderings with Russian Roulette.
-</p>
+		<p>Below are addiional renderings.</p>
 
-		<p>Below are addiional renderings.
-</p>
+			
+		<br>
 		<h2>Part 5: Adaptive Sampling</h2>
-		In this part, I worked on adaptive sampling. Adaptive sampling lets the renderer spend more time on noisy pixels and less on smooth ones. For each pixel, I took samples in small batches and added up their colors. I tracked how bright each sample is so I can see how much the brightness is changing. After every batch, I checked if the pixel’s brightness had stopped changing much by using a 95% confidence interval test. If the changes are small enough, I stop sampling that pixel early. If not, I keep going until the pixel is stable or I hit the maximum number of samples. This speeds up rendering because areas with little detail converge quickly, while more complex or shadowed areas get extra samples to reduce noise.
-
-*At this point my code is broken and for some reason the spheres are just black.
-*My implementation is slightly off - I was not able to debug this, sorry
+		In this part, I worked on adaptive sampling. Adaptive sampling lets the renderer spend more time on noisy pixels and less on smooth ones. For each pixel, I took samples in small batches and added up their colors. I tracked how bright each sample is so I can see how much the brightness is changing. After every batch, I checked if the pixel’s brightness had stopped changing much by using a 95% confidence interval test. If the changes are small enough, I stop sampling that pixel early. If not, I keep going until the pixel is stable or I hit the maximum number of samples. This speeds up rendering because areas with little detail converge quickly, while more complex or shadowed areas get extra samples to reduce noise.  *At this point my code is broken and for some reason the spheres are just black. *My implementation is slightly off - I was not able to debug this, sorry
 
 			<div style="display: flex; gap: 10px;">
-  <img src="images/bunny.png" alt="Direct illumination" width="480">
-  <img src="images/bunny_rate.png" alt="Indirect illumination" width="480">
-</div>
+			  <img src="images/bunny.png" alt="Direct illumination" width="480">
+			  <img src="images/bunny_rate.png" alt="Indirect illumination" width="480">
+			</div>
 			<div style="display: flex; gap: 10px;">
-  <img src="images/colorSpheres.png" alt="Direct illumination" width="480">
-  <img src="images/colorSpheres_rate.png" alt="Indirect illumination" width="480">
-</div>
+			  <img src="images/colorSpheres.png" alt="Direct illumination" width="480">
+			  <img src="images/colorSpheres_rate.png" alt="Indirect illumination" width="480">
+			</div>
 
 			
 		<h2>AI Acknowledgement</h2>
