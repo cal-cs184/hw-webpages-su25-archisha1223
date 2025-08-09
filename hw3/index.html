@@ -52,7 +52,7 @@
 		-->
 
 		<h2>Overview</h2>
-		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
+		Through this assignment I implemented the core concept of graphics being generated via coordinates and pixels. In this assignment, I focused on ray generation & intersection, direct & indirect illumination, global illumination, and adaptive sampling. 
 
 		<h2>Part 1: Ray Generation and Scene Intersection</h2>
 		In this part of the project, I implemented ray generation and ray-primitive intersection, which are the foundation of ray tracing. These steps allow the program to simulate how rays of light interact with objects in a scene so we can render images. Our goal is to first transform the image coordinates to camera space, generate the ray in the camera space, and finally transform it into a ray in the world space. Instead of sending one ray per pixel, we generate many rays for each pixel (these are called samples). By averaging the results of all the rays, we get a smoother and more accurate image.
@@ -194,8 +194,8 @@
 		  <img src="images/p4_bunny1_2.png" alt="Image 2">
 		  <img src="images/p4_bunny2_2.png" alt="Image 3">
 		  <img src="images/p4_bunny3_2.png" alt="Image 4">
-		  <img src="images/p4_bunny4_2.png" alt="Image 5">
-		  <img src="images/p4_bunny5_2.png" alt="Image 6">
+		  <img src="images/p4_bunny4_4.png" alt="Image 5">
+		  <img src="images/p4_bunny5_5.png" alt="Image 6">
 		</div>
 		
 		<p>Below we see the rendered image with different max ray depth values: 0, 1, 2, 3, 4, 5 with accumulated and accumulated bounces. *Note: kept 64 pixels per sample as it took too long to run even with the instructional machine and I was unable to spend as much time that is needed for this project. </p>
@@ -223,7 +223,49 @@
 			
 		<p>Below are renderings with Russian Roulette.</p>
 
+		<style>
+		  .image-row {
+		    display: flex;
+		  }
+		  .image-row img {
+		    width: 16.66%; 
+		    margin: 0;
+		    padding: 0;
+		    display: block; 
+		  }
+		</style>
+		
+		<div class="image-row">
+		  <img src="images/p4_bunny0_f.png" alt="Image 1">
+		  <img src="images/p4_bunny1_f.png" alt="Image 2">
+		  <img src="images/p4_bunny2_f.png" alt="Image 3">
+		  <img src="images/p4_bunny3_f.png" alt="Image 4">
+		  <img src="images/p4_bunny4_f.png" alt="Image 5">
+		  <img src="images/p4_bunny5_f.png" alt="Image 6">
+		</div>
+
 		<p>Below are addiional renderings.</p>
+
+		<style>
+		  .image-row {
+		    display: flex;
+		  }
+		  .image-row img {
+		    width: 16.66%; 
+		    margin: 0;
+		    padding: 0;
+		    display: block; 
+		  }
+		</style>
+		
+		<div class="image-row">
+		  <img src="images/p4_bunny0_f.png" alt="Image 1">
+		  <img src="images/p4_bunny1_f.png" alt="Image 2">
+		  <img src="images/p4_bunny2_f.png" alt="Image 3">
+		  <img src="images/p4_bunny3_f.png" alt="Image 4">
+		  <img src="images/p4_bunny4_f.png" alt="Image 5">
+		  <img src="images/p4_bunny5_f.png" alt="Image 6">
+		</div>
 
 			
 		<br>
