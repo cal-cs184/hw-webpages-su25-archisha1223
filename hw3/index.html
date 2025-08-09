@@ -60,51 +60,47 @@
 
 		<img src="images/banana.png" alt="s" style="width:50%; display:block; margin:auto;">
 
-		<p>The camera at the origin (0, 0, 0) in camera space. It looks down the -Z axis. The virtual sensor plane is at Z = -1. We convert pixel coordinates into rays in "camera space," then rotate and translate those rays into "world space" so they match the actual position and orientation of the camera in the scene. Next, I estimated the color of each pixel using Monte Carlo sampling. For every pixel, I looped over ns_aa samples, generated sub-pixel offsets, normalized them, and created rays. For each ray, I computed radiance, averaged the results, and updated the sample buffer. Thus, each pixel's color represents the direction of the ray it generates:<p>
+		<p style="margin-top: 30px;">The camera at the origin (0, 0, 0) in camera space. It looks down the -Z axis. The virtual sensor plane is at Z = -1. We convert pixel coordinates into rays in "camera space," then rotate and translate those rays into "world space" so they match the actual position and orientation of the camera in the scene. Next, I estimated the color of each pixel using Monte Carlo sampling. For every pixel, I looped over ns_aa samples, generated sub-pixel offsets, normalized them, and created rays. For each ray, I computed radiance, averaged the results, and updated the sample buffer. Thus, each pixel's color represents the direction of the ray it generates:<p>
 
 		<p>Next, I implemented ray-triangle intersection by following Lecture 9 and using the Möller Trumbore Algorithm to determine whether a ray hits a triangle within its valid range and ignores points outside of it. If there is a hit, I updated the ray to the nearest intersection point. I then computed the hit distance and interpolated the surface normal using barycentric coordinates ​​by weighting the vertex normals n1,n2,n3​ with α,β,γ. Finally, I stored the primitive and BSDF. For ray-sphere intersections, the implementation was much easier as we didn't need barycentric coordinates or interpolation. We could simply solve the quadratic equation for the ray-sphere intersection points and pick the closest valid solution. Below, we can see the renders using this approach. <p>
 		
 		<div style="display: flex; gap: 10px;">
-  <img src="images/banana2.png" alt="Direct illumination" width="480">
-  <img src="images/CBbunny.png" alt="Indirect illumination" width="480">
-</div>
-			<img src="images/CBspheres.png" alt="s" swidth="480">
+  		  <img src="images/banana2.png" alt="Direct illumination" width="480">
+          <img src="images/CBbunny.png" alt="Indirect illumination" width="480">
+        </div>
+		<br>
+		  <img src="images/CBspheres.png" alt="s" style="width:50%; display:block; margin:auto;">
 			
 		<h2>Part 2: Bounding Volume Hierarchy</h2>
-		<p> In this section, I worked on implementing a Bounding Volume Hierarchy (BVH) to accelerate the path tracer allowing it to render files more efficiently. To achieve this, I grouped primitives into a binary tree of bounding boxes. 
+		<p> In this section, I worked on implementing a Bounding Volume Hierarchy (BVH) to accelerate the path tracer allowing it to render files more efficiently. To achieve this, I grouped primitives into a binary tree of bounding boxes. First, I built a root node where the bounding box encloses all primitives. If the number of primitives in a node is less than max_leaf_size(), it becomes a leaf node and it is not split further. Otherwise, we split it into two children. To split the bounding box into sub-nodes, I used a heuristic that focused on finding the axis with the largest extent (x, y, or z), which basically finds the largest difference between the min and max. I then computed the average of the primitive centroids along that axis as the splitting point. To handle the edge case of all primitives being on one side and the other side being empty, I keep all the primitives in the current node and mark it as a leaf. This avoids creating extra or empty branches. Below are examples of large .dae files that were rendered with BHV acceleration.</p>
 
-First, I built a root node where the bounding box encloses all primitives. If the number of primitives in a node is less than max_leaf_size(), it becomes a leaf node and it is not split further. Otherwise, we split it into two children. To split the bounding box into sub-nodes, I used a heuristic that focused on finding the axis with the largest extent (x, y, or z), which basically finds the largest difference between the min and max. I then computed the average of the primitive centroids along that axis as the splitting point. To handle the edge case of all primitives being on one side and the other side being empty, I keep all the primitives in the current node and mark it as a leaf. This avoids creating extra or empty branches. 
-
-Below are examples of large .dae files that were rendered with BHV acceleration.
-</p>
-
-<div style="display: flex; gap: 10px;">
-  <img src="images/CBlucy.png" alt="Direct illumination" width="480">
-  <img src="images/man.png" alt="Indirect illumination" width="480">
-</div>
+		<div style="display: flex; gap: 10px;">
+  		  <img src="images/CBlucy.png" alt="Direct illumination" width="480">
+  		  <img src="images/man.png" alt="Indirect illumination" width="480">
+		</div>
 			
-<br>
+		<br>
 			
-<img src="images/CBgems.png" alt="s" style="width:70%"/>
+		  <img src="images/CBgems.png" alt="s" style="width:50%; display:block; margin:auto;">
 			
-<p>Here we can compare rendering with and without BVH acceleration. Below, we render a few scenes with moderately complex geometries. The first scene is CBlucy.dae and we can notice that without BVH acceleration the rendering time is: seconds. In comparison, when rendered with BHV acceleration, the rendering time is significantly reduced to: seconds. This reduction comes from BVH acceleration reducing ray intersection complexity from O(n) to O(log(n)). This allows the path tracer to quickly eliminate large portions of the scene where a hit wouldn’t occur, by using the bounding box to focus on intersection tests only where needed. This results in a dramatic improvement in efficiency. </p>
+		<p>Here we can compare rendering with and without BVH acceleration. Below, we render a few scenes with moderately complex geometries. The first scene is CBlucy.dae and we can notice that without BVH acceleration the rendering time is: seconds. In comparison, when rendered with BHV acceleration, the rendering time is significantly reduced to: seconds. This reduction comes from BVH acceleration reducing ray intersection complexity from O(n) to O(log(n)). This allows the path tracer to quickly eliminate large portions of the scene where a hit wouldn’t occur, by using the bounding box to focus on intersection tests only where needed. This results in a dramatic improvement in efficiency. </p>
 
-<div style="display: flex; gap: 10px;">
-  <figure style="text-align: center;">
-  <img src="images/CBlucy.png" alt="Direct illumination" width="480">
-	<figcaption style="margin-bottom: 40px;">CBlucy.dae without BVH: 109.2 seconds</figcaption>
-  <img src="images/cow.png" alt="Direct illumination" width="480">
-	<figcaption>cow.dae without BVH: 45.1 seconds</figcaption>
-  </figure>
-	
-  <figure> 
-  <img src="images/CBlucy.png" alt="Indirect illumination" width="480">
-	<figcaption style="margin-bottom: 40px;">CBlucy.dae with BVH: 1.6 seconds</figcaption>
- 
-  <img src="images/cow.png" alt="Indirect illumination" width="480">
-	<figcaption>cow.dae without BVH: 0.32 seconds</figcaption>
-  </figure>
-</div>
+		<div style="display: flex; gap: 10px;">
+		  <figure style="text-align: center;">
+		  <img src="images/CBlucy.png" alt="Direct illumination" width="480">
+			<figcaption style="margin-bottom: 40px;">CBlucy.dae without BVH: 109.2 seconds</figcaption>
+		  <img src="images/cow.png" alt="Direct illumination" width="480">
+			<figcaption>cow.dae without BVH: 45.1 seconds</figcaption>
+		  </figure>
+			
+		  <figure> 
+		  <img src="images/CBlucy.png" alt="Indirect illumination" width="480">
+			<figcaption style="margin-bottom: 40px;">CBlucy.dae with BVH: 1.6 seconds</figcaption>
+		 
+		  <img src="images/cow.png" alt="Indirect illumination" width="480">
+			<figcaption>cow.dae without BVH: 0.32 seconds</figcaption>
+		  </figure>
+		</div>
 			
 		<h2>Part 3: Direct Illumination</h2>
 		In this part, we focus on simulating direct illumination which allows for rendering images with realistic lighting and shading. The surfaces we render are encoded in the BSDF class (Bidirectional Scattering Distribution Function), where BSDF is a generalization of the BRDF to represent materials that can both reflect and transmit light. First I implemented diffuse BSDF, to represent a diffuse material that reflects incoming light equally in all directions on the hemisphere. Next, I implemented zero-bounce illumination to represent the light that comes out from the light source itself. 
